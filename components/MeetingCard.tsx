@@ -70,7 +70,7 @@ const MeetingCard = ({
               onClick={() => {
                 navigator.clipboard.writeText(link);
                 toast({
-                  title: "Lien copié",
+                  title: "Link Copied",
                 });
               }}
               className="bg-dark-4 px-6"
