@@ -30,8 +30,7 @@ const MeetingRoom = () => {
   const [layout, setLayout] = useState<CallLayoutType>('speaker-left');
   const { useCallCallingState } = useCallStateHooks();
 
-  // For more detail about types of CallingState, see:
-  // https://getstream.io/video/docs/react/ui-cookbook/ringing-call/#incoming-call-panel
+  // For more detail about types of CallingState, see: https://getstream.io/video/docs/react/ui-cookbook/ringing-call/#incoming-call-panel
   const callingState = useCallCallingState();
 
   if (callingState !== CallingState.JOINED) return <Loader />;
