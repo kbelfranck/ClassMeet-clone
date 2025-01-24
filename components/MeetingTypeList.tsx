@@ -108,7 +108,7 @@ const MeetingTypeList = () => {
         >
           <div className="flex flex-col gap-2.5">
             <label className="text-base font-normal leading-[22.4px] text-sky-2">
-            Ajouter une description
+            Ajoutez une description
             </label>
             <Textarea
               className="border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0"
@@ -119,7 +119,7 @@ const MeetingTypeList = () => {
           </div>
           <div className="flex w-full flex-col gap-2.5">
             <label className="text-base font-normal leading-[22.4px] text-sky-2">
-            Sélectionnez la date et l heure
+            Sélectionnez la date et lheure
             </label>
             <ReactDatePicker
               selected={values.dateTime}
