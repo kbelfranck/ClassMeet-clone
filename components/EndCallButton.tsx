@@ -32,7 +32,7 @@ const EndCallButton = () => {
 
   return (
     <Button onClick={endCall} className="bg-red-500">
-      Termine lappel pour tout le monde
+      End call for everyone
     </Button>
   );
 };

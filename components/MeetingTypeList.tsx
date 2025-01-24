@@ -35,12 +35,12 @@ const MeetingTypeList = () => {
     if (!client || !user) return;
     try {
       if (!values.dateTime) {
-        toast({ title: 'Veuillez sélectionner une date et une heure' });
+        toast({ title: 'Please select a date and time' });
         return;
       }
       const id = crypto.randomUUID();
       const call = client.call('default', id);
-      if (!call) throw new Error('Échec de la création de la réunion');
+      if (!call) throw new Error('Failed to create meeting');
       const startsAt =
         values.dateTime.toISOString() || new Date(Date.now()).toISOString();
       const description = values.description || 'Instant Meeting';
@@ -57,11 +57,11 @@ const MeetingTypeList = () => {
         router.push(`/meeting/${call.id}`);
       }
       toast({
-        title: 'Réunion créée',
+        title: 'Meeting Created',
       });
     } catch (error) {
       console.error(error);
-      toast({ title: 'Échec de la création de la réunion' });
+      toast({ title: 'Failed to create Meeting' });
     }
   };
 
@@ -73,28 +73,28 @@ const MeetingTypeList = () => {
     <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
       <HomeCard
         img="/icons/add-meeting.svg"
-        title="Nouvelle réunion"
-        description="Démarrer une réunion"
+        title="New Meeting"
+        description="Start an instant meeting"
         handleClick={() => setMeetingState('isInstantMeeting')}
       />
       <HomeCard
         img="/icons/join-meeting.svg"
-        title="Rejoindre la réunion"
-        description="via un lien d'invitation"
+        title="Join Meeting"
+        description="via invitation link"
         className="bg-blue-1"
         handleClick={() => setMeetingState('isJoiningMeeting')}
       />
       <HomeCard
         img="/icons/schedule.svg"
-        title="Planifier une réunion"
-        description="Planifiez votre réunion"
+        title="Schedule Meeting"
+        description="Plan your meeting"
         className="bg-purple-1"
         handleClick={() => setMeetingState('isScheduleMeeting')}
       />
       <HomeCard
         img="/icons/recordings.svg"
-        title="Voir les enregistrements"
-        description="Enregistrements de réunions"
+        title="View Recordings"
+        description="Meeting Recordings"
         className="bg-yellow-1"
         handleClick={() => router.push('/recordings')}
       />
@@ -103,12 +103,12 @@ const MeetingTypeList = () => {
         <MeetingModal
           isOpen={meetingState === 'isScheduleMeeting'}
           onClose={() => setMeetingState(undefined)}
-          title="Créer une réunion"
+          title="Create Meeting"
           handleClick={createMeeting}
         >
           <div className="flex flex-col gap-2.5">
             <label className="text-base font-normal leading-[22.4px] text-sky-2">
-            Ajoutez une description
+              Add a description
             </label>
             <Textarea
               className="border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0"
@@ -119,7 +119,7 @@ const MeetingTypeList = () => {
           </div>
           <div className="flex w-full flex-col gap-2.5">
             <label className="text-base font-normal leading-[22.4px] text-sky-2">
-            Selectionnez la date et lheure
+              Select Date and Time
             </label>
             <ReactDatePicker
               selected={values.dateTime}
@@ -137,7 +137,7 @@ const MeetingTypeList = () => {
         <MeetingModal
           isOpen={meetingState === 'isScheduleMeeting'}
           onClose={() => setMeetingState(undefined)}
-          title="Réunion créée"
+          title="Meeting Created"
           handleClick={() => {
             navigator.clipboard.writeText(meetingLink);
             toast({ title: 'Link Copied' });
@@ -145,20 +145,20 @@ const MeetingTypeList = () => {
           image={'/icons/checked.svg'}
           buttonIcon="/icons/copy.svg"
           className="text-center"
-          buttonText="Copier le lien de la réunion"
+          buttonText="Copy Meeting Link"
         />
       )}
 
       <MeetingModal
         isOpen={meetingState === 'isJoiningMeeting'}
         onClose={() => setMeetingState(undefined)}
-        title="Tapez le lien ici"
+        title="Type the link here"
         className="text-center"
-        buttonText="Rejoindre la réunion"
+        buttonText="Join Meeting"
         handleClick={() => router.push(values.link)}
       >
         <Input
-          placeholder="Lien de la réunion"
+          placeholder="Meeting link"
           onChange={(e) => setValues({ ...values, link: e.target.value })}
           className="border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0"
         />
@@ -167,9 +167,9 @@ const MeetingTypeList = () => {
       <MeetingModal
         isOpen={meetingState === 'isInstantMeeting'}
         onClose={() => setMeetingState(undefined)}
-        title="Démarrer une réunion instantanée"
+        title="Start an Instant Meeting"
         className="text-center"
-        buttonText="Démarrer la réunion"
+        buttonText="Start Meeting"
         handleClick={createMeeting}
       />
     </section>
