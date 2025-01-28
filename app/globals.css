@@ -1,112 +1,141 @@
+/* Importation des bases de Tailwind CSS (styles de base) */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Réinitialisation des marges, des paddings et des propriétés de boîte pour tous les éléments */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ======== stream css overrides ======== */
+/* ======== Stream CSS Overrides ======== */
+
+/* Personnalisation des statistiques de l'appel */
 .str-video__call-stats {
-  max-width: 500px;
-  position: relative;
+  max-width: 500px; /* Limite la largeur maximale à 500px */
+  position: relative; /* Définit une position relative pour un positionnement ultérieur */
 }
 
+/* Personnalisation du wrapper pour la disposition du conférencier */
 .str-video__speaker-layout__wrapper {
-  max-height: 700px;
+  max-height: 700px; /* Limite la hauteur maximale à 700px */
 }
 
+/* Personnalisation des détails des participants */
 .str-video__participant-details {
-  color: white;
+  color: white; /* Change la couleur du texte en blanc */
 }
 
+/* Personnalisation du menu de l'appel */
 .str-video__menu-container {
-  color: white;
+  color: white; /* Change la couleur du texte en blanc */
 }
 
+/* Personnalisation des notifications */
 .str-video__notification {
-  color: white;
+  color: white; /* Change la couleur du texte en blanc */
 }
 
+/* Personnalisation de la liste des participants */
 .str-video__participant-list {
-  background-color: #1c1f2e;
-  padding: 10px;
-  border-radius: 10px;
-  color: white;
-  height: 100%;
+  background-color: #1c1f2e; /* Arrière-plan sombre pour la liste des participants */
+  padding: 10px; /* Ajout de padding */
+  border-radius: 10px; /* Coins arrondis */
+  color: white; /* Texte en blanc */
+  height: 100%; /* Hauteur maximale à 100% */
 }
 
+/* Personnalisation des boutons de contrôle de l'appel */
 .str-video__call-controls__button {
-  height: 40px;
+  height: 40px; /* Définit la hauteur des boutons de contrôle */
 }
 
+/* ======== Effet Glassmorphism ======== */
+
+/* Première variante de Glassmorphism : effet de fond flou avec transparence */
 .glassmorphism {
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.25); /* Fond semi-transparent blanc */
+  backdrop-filter: blur(4px); /* Applique un flou d'arrière-plan */
+  -webkit-backdrop-filter: blur(4px); /* Compatibilité avec Webkit */
 }
+
+/* Deuxième variante de Glassmorphism avec un fond plus sombre et un flou plus intense */
 .glassmorphism2 {
-  background: rgba(18, 17, 17, 0.25);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(18, 17, 17, 0.25); /* Fond semi-transparent plus sombre */
+  backdrop-filter: blur(8px); /* Applique un flou d'arrière-plan plus intense */
+  -webkit-backdrop-filter: blur(8px); /* Compatibilité avec Webkit */
 }
 
-/* ==== clerk class override ===== */
+/* ======== Override de styles pour Clerk (gestion des utilisateurs) ======== */
 
+/* Personnalisation des icônes des boutons dans le popover de l'utilisateur */
 .cl-userButtonPopoverActionButtonIcon {
-  color: white;
+  color: white; /* Change la couleur des icônes en blanc */
 }
 
+/* Personnalisation de la boîte du logo Clerk */
 .cl-logoBox {
-  height: 40px;
+  height: 40px; /* Définit la hauteur du logo Clerk */
 }
+
+/* Personnalisation de la ligne de séparation dans le popover */
 .cl-dividerLine {
-  background: #252a41;
-  height: 2px;
+  background: #252a41; /* Fond sombre pour la ligne de séparation */
+  height: 2px; /* Définit la hauteur de la ligne de séparation */
 }
 
+/* Personnalisation des boutons sociaux dans le popover */
 .cl-socialButtonsIconButton {
-  border: 3px solid #565761;
+  border: 3px solid #565761; /* Bordure autour des boutons sociaux */
 }
 
+/* Personnalisation du texte interne de Clerk */
 .cl-internal-wkkub3 {
-  color: white;
+  color: white; /* Change la couleur du texte en blanc */
 }
+
+/* Personnalisation des boutons dans le popover de l'utilisateur */
 .cl-userButtonPopoverActionButton {
-  color: white;
+  color: white; /* Change la couleur du texte des boutons en blanc */
 }
 
 /* =============================== */
 
+/* ======== Définition des utilitaires CSS personnalisés ======== */
+
+/* Utilitaire pour centrer un élément à la fois verticalement et horizontalement */
 @layer utilities {
   .flex-center {
-    @apply flex justify-center items-center;
+    @apply flex justify-center items-center; /* Applique les classes Tailwind pour centrer */
   }
 
+  /* Utilitaire pour espacer les éléments de manière égale avec les éléments alignés */
   .flex-between {
-    @apply flex justify-between items-center;
+    @apply flex justify-between items-center; /* Applique les classes Tailwind pour espacer les éléments */
   }
 }
 
-/* animation */
+/* ======== Animation pour l'affichage d'un élément en élargissant sa largeur ======== */
 
+/* Classe pour afficher un élément avec une animation de largeur qui s'agrandit */
 .show-block {
-  width: 100%;
-  max-width: 350px;
-  display: block;
-  animation: show 0.7s forwards linear;
+  width: 100%; /* Largeur initiale à 100% */
+  max-width: 350px; /* Limite la largeur maximale à 350px */
+  display: block; /* Affiche l'élément */
+  animation: show 0.7s forwards linear; /* Applique l'animation 'show' pendant 0.7s */
 }
 
+/* Définition de l'animation de l'effet de "show" */
 @keyframes show {
   0% {
-    animation-timing-function: ease-in;
-    width: 0%;
+    animation-timing-function: ease-in; /* Début de l'animation avec une fonction d'accélération 'ease-in' */
+    width: 0%; /* La largeur commence à 0% */
   }
 
   100% {
-    animation-timing-function: ease-in;
-    width: 100%;
+    animation-timing-function: ease-in; /* Fin de l'animation avec une fonction d'accélération 'ease-in' */
+    width: 100%; /* La largeur atteint 100% */
   }
 }
