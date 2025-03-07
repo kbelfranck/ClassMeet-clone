@@ -15,7 +15,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 // Définition des métadonnées pour la page
 export const metadata: Metadata = {
-  title: "ClassMeet", // Titre de la page
+  title: "Classe Virtuelle", // Titre de la page
   description: "Video Conference App", // Description de la page
   icons: {
     icon: "/icons/logo.svg", // Définition de l'icône de la page
