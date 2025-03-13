@@ -34,9 +34,9 @@ const MobileNav = () => {
               src="/icons/logo.svg"
               width={32}
               height={32}
-              alt="ClassMeet logo"
+              alt="Classe Virtuelle logo"
             />
-            <p className="text-[26px] font-extrabold text-white">ClassMeet</p>
+            <p className="text-[26px] font-extrabold text-white">Classe Virtuelle</p>
           </Link>
           
           {/* Conteneur pour les liens du menu */}

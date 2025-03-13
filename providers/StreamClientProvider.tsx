@@ -1,44 +1,66 @@
 'use client';
 
-import { ReactNode, useEffect, useState } from 'react';  // Importation des hooks et types nécessaires
-import { StreamVideoClient, StreamVideo } from '@stream-io/video-react-sdk';  // Importation des composants du SDK Stream.io pour gérer les appels vidéo
-import { useUser } from '@clerk/nextjs';  // Importation du hook useUser pour accéder aux informations de l'utilisateur via Clerk
+import { ReactNode, useEffect, useState } from 'react';
+import { StreamVideoClient, StreamVideo } from '@stream-io/video-react-sdk';
+import { StreamChat } from 'stream-chat'; // Import StreamChat
+import { useUser } from '@clerk/nextjs';
+import { Chat } from 'stream-chat-react'; // Vérifie bien cet import
+import { tokenProvider } from '@/actions/stream.actions';
+import Loader from '@/components/Loader';
 
-import { tokenProvider } from '@/actions/stream.actions';  // Importation du tokenProvider qui fournit un jeton pour l'authentification Stream
-import Loader from '@/components/Loader';  // Importation du composant Loader qui affiche un indicateur de chargement
+const API_KEY = process.env.NEXT_PUBLIC_STREAM_API_KEY;
+const CHAT_API_KEY = process.env.NEXT_PUBLIC_STREAM_API_KEY;
 
-const API_KEY = process.env.NEXT_PUBLIC_STREAM_API_KEY;  // Récupération de la clé API Stream depuis les variables d'environnement
-
-// Définition du composant StreamVideoProvider qui englobe les enfants avec la logique de gestion de la connexion vidéo
 const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
-  const [videoClient, setVideoClient] = useState<StreamVideoClient>();  // Déclaration de l'état pour gérer l'instance du client vidéo
-  const { user, isLoaded } = useUser();  // Récupération des informations de l'utilisateur et de l'état de chargement via Clerk
+  const [videoClient, setVideoClient] = useState<StreamVideoClient>();
+  const [chatClient, setChatClient] = useState<StreamChat>(); 
+  const { user, isLoaded } = useUser();
 
-  // Utilisation de useEffect pour initialiser le client vidéo après que l'utilisateur soit chargé
   useEffect(() => {
-    if (!isLoaded || !user) return;  // Si l'utilisateur ou les données ne sont pas encore chargées, on ne fait rien
-    if (!API_KEY) throw new Error('Stream API key is missing');  // Si la clé API n'est pas définie, on lance une erreur
+    if (!isLoaded || !user) return;
+    if (!API_KEY || !CHAT_API_KEY) throw new Error('Stream API keys are missing');
 
-    // Création d'une nouvelle instance du client vidéo Stream.io avec les informations de l'utilisateur et la clé API
-    const client = new StreamVideoClient({
+    // Initialiser le client Stream Video
+    const videoClient = new StreamVideoClient({
       apiKey: API_KEY,
       user: {
-        id: user?.id,  // Identifiant unique de l'utilisateur
-        name: user?.username || user?.id,  // Nom de l'utilisateur (utilise le nom d'utilisateur s'il est défini, sinon l'ID)
-        image: user?.imageUrl,  // URL de l'image de l'utilisateur
+        id: user?.id,
+        name: user?.username || user?.id,
+        image: user?.imageUrl,
       },
-      tokenProvider,  // Fonction pour obtenir un jeton d'accès pour Stream
+      tokenProvider,
     });
+    setVideoClient(videoClient);
 
-    // Mise à jour de l'état avec le nouveau client vidéo
-    setVideoClient(client);
-  }, [user, isLoaded]);  // L'effet se déclenche lorsque l'utilisateur ou l'état de chargement change
+    // Initialiser le client Stream Chat
+    const setupChatClient = async () => {
+      try {
+        const chatClient = StreamChat.getInstance(CHAT_API_KEY);
+        const chatToken = await tokenProvider(); // Attendre le token
+        await chatClient.connectUser(
+          {
+            id: user.id,
+            name: user.username || user.id,
+            image: user.imageUrl,
+          },
+          chatToken
+        );
+        setChatClient(chatClient);
+      } catch (error) {
+        console.error("Erreur lors de la connexion à Stream Chat :", error);
+      }
+    };
 
-  // Si le client vidéo n'est pas encore disponible, afficher le Loader
-  if (!videoClient) return <Loader />;
+    setupChatClient();
+  }, [user, isLoaded]);
 
-  // Retourne le composant StreamVideo avec le client vidéo et les enfants en tant qu'éléments enfants
-  return <StreamVideo client={videoClient}>{children}</StreamVideo>;
+  if (!videoClient || !chatClient) return <Loader />;
+
+  return (
+    <StreamVideo client={videoClient}>
+      <Chat client={chatClient}>{children}</Chat> 
+    </StreamVideo>
+  );
 };
 
 export default StreamVideoProvider;

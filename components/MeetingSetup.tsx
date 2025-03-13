@@ -18,7 +18,7 @@ const MeetingSetup = ({
   // Récupération des informations d'état de l'appel via les hooks
   const { useCallEndedAt, useCallStartsAt } = useCallStateHooks();
   const callStartsAt = useCallStartsAt();  // Heure de début de l'appel
-  const callEndedAt = useCallEndedAt();  // Heure de fin de l'appel
+  const callEndedAt = useCallEndedAt();    // Heure de fin de l'appel
 
   // Vérifie si l'appel est prévu pour commencer à une heure future ou s'il est déjà terminé
   const callTimeNotArrived = callStartsAt && new Date(callStartsAt) > new Date();
@@ -28,24 +28,45 @@ const MeetingSetup = ({
 
   // Si le hook useCall ne trouve pas d'appel en cours, une erreur est lancée
   if (!call) {
-    throw new Error(
-      'useStreamCall must be used within a StreamCall component.',
-    );
+    throw new Error('useStreamCall must be used within a StreamCall component.');
   }
 
-  // Déclaration d'un état pour savoir si le micro et la caméra sont activés ou non
-  const [isMicCamToggled, setIsMicCamToggled] = useState(false);
+  // États séparés pour la désactivation de la caméra et du micro
+  const [disableCamera, setDisableCamera] = useState(false);
+  const [disableMicrophone, setDisableMicrophone] = useState(false);
 
-  // Utilisation de useEffect pour activer ou désactiver la caméra et le micro en fonction de l'état `isMicCamToggled`
+  // Utilisation de useEffect pour activer ou désactiver la caméra et le micro de façon asynchrone
   useEffect(() => {
-    if (isMicCamToggled) {
-      call.camera.disable();  // Désactive la caméra
-      call.microphone.disable();  // Désactive le micro
-    } else {
-      call.camera.enable();  // Active la caméra
-      call.microphone.enable();  // Active le micro
-    }
-  }, [isMicCamToggled, call.camera, call.microphone]);
+    const toggleDevices = async () => {
+      // Gestion de la caméra
+      if (call.camera) {
+        if (disableCamera) {
+          console.log("Désactivation de la caméra");
+          await call.camera.disable();
+        } else {
+          console.log("Activation de la caméra");
+          await call.camera.enable();
+        }
+      } else {
+        console.error("Camera non disponible");
+      }
+  
+      // Gestion du micro
+      if (call.microphone) {
+        if (disableMicrophone) {
+          console.log("Désactivation du micro");
+          await call.microphone.disable();
+        } else {
+          console.log("Activation du micro");
+          await call.microphone.enable();
+        }
+      } else {
+        console.error("Microphone non disponible");
+      }
+    };
+  
+    toggleDevices();
+  }, [disableCamera, disableMicrophone, call.camera, call.microphone]);
 
   // Si l'heure de début de l'appel n'est pas encore arrivée, affiche un message d'alerte
   if (callTimeNotArrived)
@@ -69,24 +90,32 @@ const MeetingSetup = ({
       <h1 className="text-center text-2xl font-bold">Configurations Personnelles</h1>
       <VideoPreview />  {/* Affiche un aperçu vidéo avant de rejoindre l'appel */}
       
-      {/* Section pour configurer le micro et la caméra */}
-      <div className="flex h-16 items-center justify-center gap-3">
-        <label className="flex items-center justify-center gap-2 font-medium">
+      {/* Section pour configurer la caméra et le micro avec deux cases à cocher distinctes */}
+      <div className="flex flex-col gap-4 items-center justify-center h-24">
+        <label className="flex items-center gap-2 font-medium">
           <input
             type="checkbox"
-            checked={isMicCamToggled}  // L'état de la case à cocher dépend de `isMicCamToggled`
-            onChange={(e) => setIsMicCamToggled(e.target.checked)}  // Mise à jour de l'état lors de la modification de la case à cocher
+            checked={disableCamera}  // L'état de la case dépend de disableCamera
+            onChange={(e) => setDisableCamera(e.target.checked)}  // Met à jour l'état pour la caméra
           />
-          Rejoindre la réunion avec la caméra et le micro désactivés
+          Rejoindre la réunion avec la caméra désactivée
         </label>
-        <DeviceSettings />  {/* Permet à l'utilisateur de configurer ses périphériques vidéo */}
+        <label className="flex items-center gap-2 font-medium">
+          <input
+            type="checkbox"
+            checked={disableMicrophone}  // L'état de la case dépend de disableMicrophone
+            onChange={(e) => setDisableMicrophone(e.target.checked)}  // Met à jour l'état pour le micro
+          />
+          Rejoindre la réunion avec le micro désactivé
+        </label>
+        <DeviceSettings />  {/* Permet à l'utilisateur de configurer ses périphériques */}
       </div>
       
       {/* Bouton pour rejoindre la réunion */}
       <Button
         className="rounded-md bg-green-500 px-4 py-2.5"
         onClick={() => {
-          call.join();  // Rejoint la réunion
+          call.join();             // Rejoint la réunion
           setIsSetupComplete(true);  // Marque la configuration comme terminée
         }}
       >
