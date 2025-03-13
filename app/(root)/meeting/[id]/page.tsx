@@ -14,7 +14,7 @@ import MeetingRoom from '@/components/MeetingRoom'; // Composant pour afficher l
 
 const MeetingPage = () => {
   // Utilisation de useParams pour extraire l'ID de la réunion depuis l'URL
-  const { id } = useParams();
+  const { id } = useParams() as { id: string };
   // Récupération de l'utilisateur connecté et de l'état de chargement via Clerk
   const { isLoaded, user } = useUser();
   // Utilisation du hook personnalisé pour obtenir les informations de la réunion avec l'ID
