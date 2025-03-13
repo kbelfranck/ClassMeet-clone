@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar'; // Composant pour la barre de navigati
 import Sidebar from '@/components/Sidebar'; // Composant pour la barre latérale (menu)
 
 export const metadata: Metadata = {
-  title: 'ClassMeet', // Titre de la page, utilisé dans les balises <title> du HTML
+  title: 'Classe Virtuelle', // Titre de la page, utilisé dans les balises <title> du HTML
   description: 'A workspace for your team, powered by Stream Chat and Clerk.', // Description de la page, pour les balises meta-description
 };
 
