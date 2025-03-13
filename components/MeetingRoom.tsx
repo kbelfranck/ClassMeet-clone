@@ -14,7 +14,7 @@ import {
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Users, LayoutList, MessageSquare } from 'lucide-react';
 import { Channel, MessageList, MessageInput, Window, useChatContext } from 'stream-chat-react';
-// import 'stream-chat-react/dist/css/index.css';
+
 
 import {
   DropdownMenu,
@@ -25,7 +25,7 @@ import {
 } from './ui/dropdown-menu';
 import Loader from './Loader';
 import EndCallButton from './EndCallButton';
-// import { cn } from '@/lib/utils';
+
 
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right';
 
