@@ -7,7 +7,7 @@ const Home = () => {
   const now = new Date();
 
   // Formatage de l'heure dans un format local français (HH:MM)
-  const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
   // Formatage de la date dans un format complet (jour de la semaine, mois, jour, année)
   const date = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'full' }).format(now);
